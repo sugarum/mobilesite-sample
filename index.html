@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobiLife | 無制限プラン</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========================================
+           CSS Variables (Custom Properties)
+        ======================================== */
+        :root {
+            /* カラーパレット */
+            --primary-color: #667eea;
+            --primary-dark: #5a6fd8;
+            --primary-light: #764ba2;
+            --secondary-color: #ff6b6b;
+            --accent-color: #28a745;
+            
+            /* グレースケール */
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-light: #999999;
+            --border-color: #e8e8e8;
+            --border-light: #f0f0f0;
+            --background-primary: #ffffff;
+            --background-secondary: #f5f5f5;
+            --background-accent: #f8f9fa;
+            
+            /* フォント */
+            --font-family: 'Noto Sans JP', sans-serif;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 600;
+            --font-weight-bold: 700;
+            
+            /* スペーシング */
+            --spacing-xs: 0.25rem;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-xxl: 3rem;
+            
+            /* ボーダー半径 */
+            --border-radius-sm: 4px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 12px;
+            --border-radius-xl: 16px;
+            --border-radius-round: 50%;
+            
+            /* シャドウ */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+            --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.16);
+            
+            /* トランジション */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .nav a:hover {
+            opacity: 0.8;
+        }
+
+        .cart-icon {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cart-icon:hover {
+            background-color: white;
+            color: #bf0000;
+        }
+
+        /* ヒーローセクション */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 80px 0 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .hero-price {
+            font-size: 64px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero-price .unit {
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .hero-data {
+            font-size: 24px;
+            margin-bottom: 40px;
+            font-weight: 700;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-primary {
+            background: var(--secondary-color);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.3);
+            transition: all var(--transition-normal);
+            border: 3px solid var(--secondary-color);
+        }
+
+        .cta-primary:hover {
+            background: #ff5252;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(255, 107, 107, 0.4);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 18px;
+            border: 3px solid white;
+            transition: all 0.3s;
+        }
+
+        .cta-secondary:hover {
+            background: white;
+            color: #bf0000;
+        }
+
+        /* プラン詳細セクション */
+        .plan-details {
+            padding: 80px 0;
+            background: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 60px;
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .plan-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .plan-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.15);
+            border-color: var(--primary-color);
+        }
+
+        .plan-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .plan-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .plan-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .plan-price {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        /* 特徴セクション */
+        .features {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .feature-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .feature-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* キャンペーンセクション */
+        .campaign {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .campaign h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .campaign-subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.95;
+        }
+
+        .campaign-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .campaign-feature {
+            background: rgba(255,255,255,0.1);
+            padding: 30px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .campaign-feature h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* フッター */
+        .footer {
+            background: #333;
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #555;
+            color: #ccc;
+        }
+
+        /* お客様の声セクション */
+        .testimonials {
+            padding: 80px 0;
+            background: var(--background-secondary);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .testimonial-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .testimonial-content {
+            margin-bottom: 20px;
+        }
+
+        .testimonial-content p {
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .testimonial-content p::before {
+            content: '"';
+            font-size: 48px;
+            color: var(--primary-color);
+            position: absolute;
+            left: -10px;
+            top: -15px;
+            font-family: serif;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .author-avatar {
+            font-size: 32px;
+            width: 50px;
+            height: 50px;
+            background: var(--background-accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .author-name {
+            font-weight: 700;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+
+        .author-detail {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        /* データ利用量比較セクション */
+        .data-comparison {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .comparison-item {
+            text-align: center;
+            padding: 40px 20px;
+            background: var(--background-accent);
+            border-radius: 20px;
+            transition: all var(--transition-normal);
+            border: 2px solid transparent;
+        }
+
+        .comparison-item:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .comparison-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+        }
+
+        .comparison-item h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .comparison-data {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .comparison-item p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav {
+                gap: 15px;
+            }
+
+            .nav a {
+                font-size: 12px;
+            }
+
+            .hero {
+                padding: 60px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero-price {
+                font-size: 48px;
+            }
+
+            .hero-data {
+                font-size: 20px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .plan-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .campaign-features {
+                grid-template-columns: 1fr;
+            }
+
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .hero-price {
+                font-size: 36px;
+            }
+
+            .cta-primary,
+            .cta-secondary {
+                padding: 15px 30px;
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-container">
+            <a href="#" class="logo">MobiLife</a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="#plan">プラン</a></li>
+                    <li><a href="apply.html" class="nav-cta">お申し込み</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ヒーローセクション -->
+    <section class="hero">
+        <div class="hero-container">
+            <h1>MobiLife無制限プラン</h1>
+            <p class="hero-subtitle">データ高速無制限＆国内通話かけ放題</p>
+            <div class="hero-price">3,278<span class="unit">円/月</span></div>
+            <div class="hero-data">データ無制限</div>
+            <div class="cta-buttons">
+                <a href="apply.html" class="cta-primary">今すぐ申し込む</a>
+                <a href="#plan" class="cta-secondary">詳細を見る</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- プラン詳細 -->
+    <section id="plan" class="plan-details">
+        <div class="container">
+            <h2 class="section-title">シンプルな料金体系</h2>
+            <div class="plan-grid">
+                <div class="plan-card">
+                    <div class="plan-icon">📱</div>
+                    <h3 class="plan-title">データ無制限</h3>
+                    <p class="plan-description">MobiLife回線エリアならデータ高速無制限。動画もゲームも思う存分楽しめます。</p>
+                    <div class="plan-price">3,278円</div>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-icon">📞</div>
+                    <h3 class="plan-title">国内通話かけ放題</h3>
+                    <p class="plan-description">MobiLifeアプリを使えば国内通話がかけ放題。追加料金は一切不要です。</p>
+                    <div class="plan-price">0円</div>
+                </div>
+                <div class="plan-card">
+                    <div class="plan-icon">🌍</div>
+                    <h3 class="plan-title">海外でも使える</h3>
+                    <p class="plan-description">海外指定75の国と地域でデータ通信が使える。毎月2GBまで追加料金なし。</p>
+                    <div class="plan-price">0円</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 特徴セクション -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">MobiLifeの特徴</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🏢</div>
+                    <h3 class="feature-title">MobiLifeエコシステム</h3>
+                    <p class="feature-description">MobiLifeサービスでのお買い物がポイント最大3倍。MobiLifeペイ、MobiLife銀行との連携でさらにお得。</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📶</div>
+                    <h3 class="feature-title">5G対応</h3>
+                    <p class="feature-description">高速5G通信に対応。エリアも順次拡大中で、より快適な通信環境を提供します。</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💰</div>
+                    <h3 class="feature-title">初期費用0円</h3>
+                    <p class="feature-description">契約事務手数料、SIM発行手数料、MNP転出手数料すべて0円。気軽に始められます。</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔒</div>
+                    <h3 class="feature-title">契約期間の縛りなし</h3>
+                    <p class="feature-description">最低利用期間や解約金は一切なし。いつでも安心してご利用いただけます。</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌐</div>
+                    <h3 class="feature-title">海外でも安心</h3>
+                    <p class="feature-description">75の国と地域で追加料金なし。海外旅行や出張でも安心してご利用いただけます。</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">高速データ無制限</h3>
+                    <p class="feature-description">動画やゲーム、リモートワークもストレスフリー。データ制限を気にせず使い放題。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- お客様の声セクション -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">お客様の声</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"以前のキャリアから乗り換えて月額料金が半額以下になりました。通信品質も良く、とても満足しています。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👩‍💼</div>
+                        <div class="author-info">
+                            <div class="author-name">佐藤 美咲さん</div>
+                            <div class="author-detail">会社員・東京都</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"海外出張が多いのですが、追加料金なしで海外でも使えるのが本当に助かります。手続きも簡単でした。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👨‍💻</div>
+                        <div class="author-info">
+                            <div class="author-name">田中 健太さん</div>
+                            <div class="author-detail">営業職・大阪府</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <p>"家族4人で乗り換えました。MobiLifeポイントがよく貯まるので、日用品の買い物でも重宝しています。"</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">👩‍👧‍👦</div>
+                        <div class="author-info">
+                            <div class="author-name">山田 ゆかりさん</div>
+                            <div class="author-detail">主婦・神奈川県</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- データ利用量比較セクション -->
+    <section class="data-comparison">
+        <div class="container">
+            <h2 class="section-title">どれだけ使えるの？</h2>
+            <div class="comparison-grid">
+                <div class="comparison-item">
+                    <div class="comparison-icon">🎬</div>
+                    <h3>動画視聴</h3>
+                    <div class="comparison-data">約330時間/月</div>
+                    <p>Netflix、YouTube、Amazonプライムビデオなど高画質動画も見放題</p>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-icon">🎮</div>
+                    <h3>オンラインゲーム</h3>
+                    <div class="comparison-data">約1,650時間/月</div>
+                    <p>PUBG、フォートナイト、原神などの人気ゲームもラグなし</p>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-icon">💼</div>
+                    <h3>ビデオ会議</h3>
+                    <div class="comparison-data">約550時間/月</div>
+                    <p>ZoomやTeamsでのリモートワークも快適に</p>
+                </div>
+                <div class="comparison-item">
+                    <div class="comparison-icon">📱</div>
+                    <h3>SNS・ネット</h3>
+                    <div class="comparison-data">無制限</div>
+                    <p>Instagram、TikTok、Twitter、LINEなど使い放題</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- キャンペーンセクション -->
+    <section class="campaign">
+        <div class="container">
+            <h2>🎉 今だけの特別キャンペーン</h2>
+            <p class="campaign-subtitle">新規お申し込みで最大24,000MobiLifeポイントプレゼント</p>
+            <div class="campaign-features">
+                <div class="campaign-feature">
+                    <h3>🎁 初回限定</h3>
+                    <p>MobiLifeポイント8,000pt</p>
+                </div>
+                <div class="campaign-feature">
+                    <h3>📱 端末セット</h3>
+                    <p>最大16,000pt還元</p>
+                </div>
+                <div class="campaign-feature">
+                    <h3>👥 紹介特典</h3>
+                    <p>紹介者・被紹介者共に3,000pt</p>
+                </div>
+            </div>
+            <a href="apply.html" class="cta-primary">キャンペーンを利用して申し込む</a>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>サービス</h4>
+                    <ul>
+                        <li><a href="#">料金プラン</a></li>
+                        <li><a href="#">端末一覧</a></li>
+                        <li><a href="#">オプションサービス</a></li>
+                        <li><a href="#">エリア確認</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>サポート</h4>
+                    <ul>
+                        <li><a href="#">よくある質問</a></li>
+                        <li><a href="#">お問い合わせ</a></li>
+                        <li><a href="#">店舗案内</a></li>
+                        <li><a href="#">使い方ガイド</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>会社情報</h4>
+                    <ul>
+                        <li><a href="#">MobiLifeについて</a></li>
+                        <li><a href="#">ニュース</a></li>
+                        <li><a href="#">IR情報</a></li>
+                        <li><a href="#">採用情報</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>利用規約・ポリシー</h4>
+                    <ul>
+                        <li><a href="#">利用規約</a></li>
+                        <li><a href="#">プライバシーポリシー</a></li>
+                        <li><a href="#">特定商取引法</a></li>
+                        <li><a href="#">個人情報保護方針</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MobiLife, Inc. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

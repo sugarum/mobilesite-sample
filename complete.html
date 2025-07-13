@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>お申し込み完了 | MobiLife</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #5a6fd8;
+            --primary-light: #764ba2;
+            --secondary-color: #ff6b6b;
+            --accent-color: #28a745;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --background-primary: #ffffff;
+            --background-secondary: #f5f5f5;
+            --background-accent: #f8f9fa;
+            --border-color: #e8e8e8;
+            --transition-normal: 0.3s ease;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--background-accent);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .nav a:hover {
+            opacity: 0.8;
+        }
+
+        .nav-cta {
+            background: var(--secondary-color) !important;
+            color: white !important;
+            padding: 8px 16px !important;
+            border-radius: 20px !important;
+            font-weight: 700 !important;
+        }
+
+        .nav-cta:hover {
+            background: #ff5252 !important;
+            opacity: 1 !important;
+        }
+
+        .completion-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            background: rgba(255,255,255,0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+
+        /* 進行状況インジケーター */
+        .progress-container {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 0;
+        }
+
+        .progress-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #28a745;
+            z-index: 2;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: #28a745;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .step-circle.completed {
+            background: #28a745;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+            color: #28a745;
+            font-weight: 700;
+        }
+
+        /* メインコンテンツ */
+        .main-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* 完了メッセージ */
+        .completion-hero {
+            background: white;
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 3px solid #28a745;
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: #28a745;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .completion-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .completion-subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .application-number {
+            background: #f8f9fa;
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .application-number-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .application-number-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent-color);
+            font-family: monospace;
+        }
+
+        .email-confirmation {
+            background: #e8f5e8;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .email-confirmation h4 {
+            color: #28a745;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .email-confirmation p {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* コンテンツグリッド */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-icon {
+            font-size: 24px;
+        }
+
+        /* 申し込み内容サマリー */
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            font-weight: 500;
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .summary-price {
+            font-weight: 700;
+            color: #bf0000;
+        }
+
+        .total-summary {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .total-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* 次のステップ */
+        .next-steps {
+            list-style: none;
+        }
+
+        .next-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .next-step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .step-content p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .step-timeline {
+            font-size: 12px;
+            color: #28a745;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        /* 重要情報 */
+        .important-info {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .important-info h4 {
+            color: #856404;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .important-info p {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* アクションボタン */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: 2px solid;
+        }
+
+        .action-button.primary {
+            background: var(--secondary-color);
+            color: white;
+            border-color: var(--secondary-color);
+        }
+
+        .action-button.primary:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.3);
+        }
+
+        .action-button.secondary {
+            background: white;
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .action-button.secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* フッター情報 */
+        .footer-info {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .contact-item {
+            text-align: center;
+        }
+
+        .contact-item h4 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        .contact-item p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav {
+                gap: 15px;
+            }
+
+            .nav a {
+                font-size: 12px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .completion-hero {
+                padding: 40px 20px;
+            }
+
+            .completion-title {
+                font-size: 24px;
+            }
+
+            .success-icon {
+                font-size: 60px;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .progress-steps::before {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">MobiLife</a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="index.html#plan">プラン</a></li>
+                    <li><a href="apply.html" class="nav-cta">お申し込み</a></li>
+                </ul>
+            </nav>
+            <div class="completion-badge">
+                ✅ 申し込み完了
+            </div>
+        </div>
+    </header>
+
+    <!-- 進行状況インジケーター -->
+    <section class="progress-container">
+        <div class="progress-wrapper">
+            <div class="progress-steps">
+                <div class="progress-step">
+                    <div class="step-circle completed">✓</div>
+                    <div class="step-label">プラン選択</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle completed">✓</div>
+                    <div class="step-label">確認・決済</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle completed">✓</div>
+                    <div class="step-label">完了</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- メインコンテンツ -->
+    <main class="main-container">
+        <!-- 完了メッセージ -->
+        <section class="completion-hero">
+            <div class="success-icon">🎉</div>
+            <h1 class="completion-title">お申し込みが完了しました！</h1>
+            <p class="completion-subtitle">
+                MobiLifeへのお申し込みをいただき、誠にありがとうございます。<br>
+                お手続きが正常に完了いたしました。
+            </p>
+            
+            <div class="application-number">
+                <div class="application-number-label">お申し込み番号</div>
+                <div class="application-number-value">ML2024071300001</div>
+            </div>
+
+            <div class="email-confirmation">
+                <h4>📧 確認メール送信完了</h4>
+                <p>お申し込み内容の詳細を記載した確認メールを<strong>mobilife.taro@example.com</strong>宛に送信いたしました。</p>
+            </div>
+        </section>
+
+        <!-- 重要なお知らせ */
+        <div class="important-info">
+            <h4>⚠️ 重要なお知らせ</h4>
+            <p>SIM到着後、必ず「MobiLife回線の開通手続き」を行ってください。手続きを行わない場合、サービスがご利用いただけません。詳細は同封の案内書をご確認ください。</p>
+        </div>
+
+        <!-- コンテンツグリッド -->
+        <div class="content-grid">
+            <!-- 申し込み内容サマリー -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📋</span>
+                    お申し込み内容
+                </h2>
+                
+                <div class="summary-item">
+                    <span class="summary-label">プラン</span>
+                    <span class="summary-value">MobiLife無制限プラン</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">SIMタイプ</span>
+                    <span class="summary-value">eSIM</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">国際通話かけ放題</span>
+                    <span class="summary-price">980円/月</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">スマホ交換保証プラス</span>
+                    <span class="summary-price">715円/月</span>
+                </div>
+
+                <div class="total-summary">
+                    <div class="total-item">
+                        <span>月額合計</span>
+                        <span>4,973円</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 次のステップ -->
+            <section class="content-section">
+                <h2 class="section-title">
+                    <span class="section-icon">📝</span>
+                    今後の流れ
+                </h2>
+                
+                <ol class="next-steps">
+                    <li class="next-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>本人確認書類の確認</h4>
+                            <p>アップロードいただいた書類の確認を行います。</p>
+                            <div class="step-timeline">🕐 1-2営業日</div>
+                        </div>
+                    </li>
+                    <li class="next-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>SIM発送</h4>
+                            <p>eSIMの場合は設定用QRコードをメール送信、SIMカードの場合は郵送いたします。</p>
+                            <div class="step-timeline">🕐 2-3営業日</div>
+                        </div>
+                    </li>
+                    <li class="next-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>開通手続き</h4>
+                            <p>my MobiLifeアプリまたはWebから開通手続きを行ってください。</p>
+                            <div class="step-timeline">🕐 SIM到着後すぐ</div>
+                        </div>
+                    </li>
+                    <li class="next-step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>ご利用開始</h4>
+                            <p>MobiLifeサービスのご利用が開始されます。</p>
+                            <div class="step-timeline">🎉 開通手続き完了後</div>
+                        </div>
+                    </li>
+                </ol>
+            </section>
+        </div>
+
+        <!-- アクションボタン -->
+        <div class="action-buttons">
+            <a href="#" class="action-button primary">
+                📱 my MobiLifeアプリをダウンロード
+            </a>
+            <a href="#" class="action-button secondary">
+                📄 契約書類をダウンロード (PDF)
+            </a>
+            <a href="index.html" class="action-button secondary">
+                🏠 トップページへ戻る
+            </a>
+            <a href="#" class="action-button secondary">
+                📞 サポートに問い合わせる
+            </a>
+        </div>
+
+        <!-- フッター情報 -->
+        <section class="footer-info">
+            <h3 style="color: #bf0000; margin-bottom: 20px;">お困りの際はお気軽にお問い合わせください</h3>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h4>📞 電話サポート</h4>
+                    <p>
+                        0120-555-0123<br>
+                        （通話料無料）<br>
+                        9:00〜20:00（年中無休）
+                    </p>
+                </div>
+                <div class="contact-item">
+                    <h4>💬 チャットサポート</h4>
+                    <p>
+                        my MobiLifeアプリ<br>
+                        またはWebから<br>
+                        24時間受付
+                    </p>
+                </div>
+                <div class="contact-item">
+                    <h4>🏪 楽天モバイルショップ</h4>
+                    <p>
+                        全国のMobiLifeショップで<br>
+                        対面サポートを提供<br>
+                        <a href="#" style="color: #bf0000;">店舗検索はこちら</a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

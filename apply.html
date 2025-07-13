@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MobiLife無制限プラン | MobiLife</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #667eea;
+            --primary-dark: #5a6fd8;
+            --primary-light: #764ba2;
+            --secondary-color: #ff6b6b;
+            --accent-color: #28a745;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --background-primary: #ffffff;
+            --background-secondary: #f5f5f5;
+            --background-accent: #f8f9fa;
+            --border-color: #e8e8e8;
+            --transition-normal: 0.3s ease;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--background-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ヘッダー */
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* 進行状況インジケーター */
+        .progress-container {
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 20px 0;
+        }
+
+        .progress-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .progress-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+
+        .progress-steps::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 33.33%;
+            height: 2px;
+            background: var(--primary-color);
+            z-index: 2;
+            transition: width 0.3s;
+        }
+
+        .progress-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        .step-circle.completed {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .step-circle.current {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.2);
+        }
+
+        .step-circle.pending {
+            background: #e0e0e0;
+            color: #999;
+        }
+
+        .step-label {
+            font-size: 14px;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .step-label.current {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            text-decoration: none;
+            color: white;
+        }
+
+        .nav {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .nav a:hover {
+            opacity: 0.8;
+        }
+
+        .cart-icon {
+            background: none;
+            border: 2px solid white;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cart-icon:hover {
+            background-color: white;
+            color: #bf0000;
+        }
+
+        /* メインコンテンツ */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 40px;
+        }
+
+        .content-area {
+            min-height: 600px;
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* オプションセクション */
+        .option-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .option-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-card {
+            background-color: #f8f8f8;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary-color);
+            background-color: #f8f9ff;
+        }
+
+        .option-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .option-checkbox {
+            margin-top: 3px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary-color);
+        }
+
+        .option-info {
+            flex: 1;
+        }
+
+        .option-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .option-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .option-price {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-align: right;
+        }
+
+        /* サイドバー */
+        .sidebar {
+            min-height: 600px;
+        }
+
+        .sidebar-panel {
+            background-color: #f8f8f8;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+
+        .plan-summary {
+            margin-bottom: 15px;
+        }
+
+        .plan-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .plan-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .plan-price .unit {
+            font-size: 14px;
+            font-weight: 400;
+            color: #666;
+        }
+
+        /* SIMタイプ選択 */
+        .sim-type-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .sim-option {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            background-color: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .sim-option:hover {
+            border-color: #bf0000;
+        }
+
+        .sim-option.selected {
+            border-color: #bf0000;
+            background-color: #fff5f5;
+        }
+
+        .sim-radio {
+            width: 16px;
+            height: 16px;
+            accent-color: #bf0000;
+        }
+
+        .sim-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* 料金概要 */
+        .cost-summary {
+            border-top: 1px solid #e0e0e0;
+            padding-top: 15px;
+        }
+
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .cost-label {
+            color: #666;
+        }
+
+        .cost-value {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .total-cost {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 2px solid #bf0000;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .total-label {
+            color: #333;
+        }
+
+        .total-value {
+            color: #bf0000;
+        }
+
+        /* チェックアウトボタン */
+        .checkout-button {
+            display: block;
+            width: 100%;
+            background: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: all var(--transition-normal);
+            border: none;
+            cursor: pointer;
+        }
+
+        .checkout-button:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 107, 107, 0.3);
+        }
+
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 20px 15px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .nav {
+                gap: 15px;
+            }
+
+            .nav a {
+                font-size: 12px;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .progress-steps::before,
+            .progress-steps::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">MobiLife</a>
+            <nav>
+                <ul class="nav">
+                    <li><a href="index.html#plan">プラン</a></li>
+                    <li><a href="apply.html" class="nav-cta">お申し込み</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 進行状況インジケーター -->
+    <section class="progress-container">
+        <div class="progress-wrapper">
+            <div class="progress-steps">
+                <div class="progress-step">
+                    <div class="step-circle current">1</div>
+                    <div class="step-label current">プラン選択</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle pending">2</div>
+                    <div class="step-label">確認・決済</div>
+                </div>
+                <div class="progress-step">
+                    <div class="step-circle pending">3</div>
+                    <div class="step-label">完了</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- メインコンテンツ -->
+    <main class="main-container">
+        <div class="content-area">
+            <h1 class="page-title">MobiLife無制限プラン</h1>
+
+            <!-- 国際通信オプション -->
+            <section class="option-section">
+                <h2 class="section-title">国際での通信をよく使う方</h2>
+                <div class="option-cards">
+                    <div class="option-card">
+                        <div class="option-header">
+                            <input type="checkbox" class="option-checkbox" id="international1">
+                            <div class="option-info">
+                                <div class="option-name">国際通話かけ放題</div>
+                                <div class="option-description">
+                                    海外の指定66の国と地域への国際通話がかけ放題<br>
+                                    アメリカ、中国、韓国、台湾、タイ、フィリピンなど
+                                </div>
+                            </div>
+                            <div class="option-price">980円/月</div>
+                        </div>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="option-header">
+                            <input type="checkbox" class="option-checkbox" id="international2">
+                            <div class="option-info">
+                                <div class="option-name">海外データ通信</div>
+                                <div class="option-description">
+                                    海外指定75の国と地域でデータ通信が使える<br>
+                                    毎月2GBまで追加料金なし
+                                </div>
+                            </div>
+                            <div class="option-price">0円/月</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- データ追加オプション -->
+            <section class="option-section">
+                <h2 class="section-title">データをたくさん使う方</h2>
+                <div class="option-cards">
+                    <div class="option-card">
+                        <div class="option-header">
+                            <input type="checkbox" class="option-checkbox" id="data1">
+                            <div class="option-info">
+                                <div class="option-name">データチャージ</div>
+                                <div class="option-description">
+                                    高速データ容量を使い切った場合でも<br>
+                                    1GBあたり550円でデータ購入可能
+                                </div>
+                            </div>
+                            <div class="option-price">550円/GB</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 端末保証オプション -->
+            <section class="option-section">
+                <h2 class="section-title">端末の保証が欲しい方</h2>
+                <div class="option-cards">
+                    <div class="option-card">
+                        <div class="option-header">
+                            <input type="checkbox" class="option-checkbox" id="insurance1">
+                            <div class="option-info">
+                                <div class="option-name">スマホ交換保証プラス</div>
+                                <div class="option-description">
+                                    故障・紛失時に6,600円で交換機をお届け<br>
+                                    年3回まで利用可能
+                                </div>
+                            </div>
+                            <div class="option-price">715円/月</div>
+                        </div>
+                    </div>
+
+                    <div class="option-card">
+                        <div class="option-header">
+                            <input type="checkbox" class="option-checkbox" id="insurance2">
+                            <div class="option-info">
+                                <div class="option-name">持ち込みスマホあんしん保証</div>
+                                <div class="option-description">
+                                    お手持ちのスマートフォンの保証サービス<br>
+                                    修理代金を最大100,000円まで補償
+                                </div>
+                            </div>
+                            <div class="option-price">715円/月</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- サイドバー -->
+        <aside class="sidebar">
+            <!-- 申し込み内容 -->
+            <div class="sidebar-panel">
+                <h3 class="panel-title">申し込み内容</h3>
+                <div class="plan-summary">
+                    <div class="plan-name">MobiLife無制限プラン</div>
+                    <div class="plan-price">
+                        3,278<span class="unit">円/月</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SIMタイプ選択 -->
+            <div class="sidebar-panel">
+                <h3 class="panel-title">SIMタイプ</h3>
+                <div class="sim-type-options">
+                    <label class="sim-option">
+                        <input type="radio" name="sim-type" value="sim-card" class="sim-radio">
+                        <span class="sim-label">SIMカード</span>
+                    </label>
+                    <label class="sim-option">
+                        <input type="radio" name="sim-type" value="esim" class="sim-radio">
+                        <span class="sim-label">eSIM</span>
+                    </label>
+                    <label class="sim-option">
+                        <input type="radio" name="sim-type" value="undecided" class="sim-radio" checked>
+                        <span class="sim-label">未定</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 料金概要 -->
+            <div class="sidebar-panel">
+                <h3 class="panel-title">料金概要</h3>
+                <div class="cost-summary">
+                    <div class="cost-item">
+                        <span class="cost-label">初期費用</span>
+                        <span class="cost-value">0円</span>
+                    </div>
+                    <div class="cost-item">
+                        <span class="cost-label">プラン料金</span>
+                        <span class="cost-value">3,278円/月</span>
+                    </div>
+                    <div class="cost-item">
+                        <span class="cost-label">オプション料金</span>
+                        <span class="cost-value">0円/月</span>
+                    </div>
+                    <div class="total-cost">
+                        <span class="total-label">月額合計</span>
+                        <span class="total-value">3,278円</span>
+                    </div>
+                </div>
+                
+                <a href="checkout.html" class="checkout-button">
+                    お申し込み手続きへ進む
+                </a>
+            </div>
+        </aside>
+    </main>
+</body>
+</html>
